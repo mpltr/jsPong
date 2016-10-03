@@ -12,6 +12,7 @@ html, body {
 	margin: auto;
 	margin-top: 200px;
 	border: 1px solid;
+	background-color: none;
 }
 
 #start {
@@ -32,7 +33,7 @@ html, body {
 	border-radius: 100px;
 	background-color: red;
 	z-index: -1;
-	/*transition: 21ms top, 9ms left;*/
+	transition: 0.05s top, 0.01s left;
 }
 
 #paddle {
@@ -42,3 +43,29 @@ html, body {
 	width: 10px;
 	background-color: blue;
 }
+
+#computer {
+	position: absolute;
+	left: 0;
+	height: 60px;
+	width: 10px;
+	background-color: green;
+	transition: top 0.1s;
+}
+
+#scores {
+	width:200px;
+	height: 100px;
+	border: 1px solid black;
+	margin: auto;
+}
+
+#comp-score, #player-score {
+	width: 95px;
+	height: 100px;
+	display: inline-block;
+	text-align: center;
+}
+
+
+
