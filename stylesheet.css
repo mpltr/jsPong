@@ -33,7 +33,7 @@ html, body {
 	border-radius: 100px;
 	background-color: red;
 	z-index: -1;
-	transition: 0.05s top, 0.01s left;
+	/*transition: 0.05s top, 0.01s left;*/
 }
 
 #paddle {
