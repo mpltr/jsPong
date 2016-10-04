@@ -2,91 +2,91 @@ function gbi(ID){
 	return document.getElementById(ID);
 }
 
-gbi('start').addEventListener("click", function(){
+//globals;
+var ini;
+var computerScore = 0;
+var playerScore   = 0;
+var ball          = gbi('ball');
+var start         = gbi('start');
+var paddle        = gbi('paddle');
+var computer      = gbi('computer');
+var Yspeed        = 1;
+var Ydirection    = 1;
+var Xspeed        = 2;
+var Xdirection    = 1;
+
+start.addEventListener("click", function(){
 	this.style.display = "none";
 	play();
 })
 
-var computerScore = 0;
-var playerScore   = 0;
-
-var verticalSpeed     = 20;
-var verticalDirection = 10;
-var horizontalSpeed     = 50;
-var horizontalDirection = 10;
-var V,H;
-
 function play(){
-	 V = setInterval(ballVertical, verticalSpeed);
-	 H = setInterval(ballHorizontal, horizontalSpeed);
+	ini = setInterval(moveBall, 100);
 }
 
 function stop(){
-	clearInterval(V);
-	clearInterval(H);
-	gbi('start').style.display = "block";
-	gbi('ball').style.top = "0px";
-	gbi('ball').style.left = "390px";
-
+	clearInterval(ini);
+	// start.style.display = "block";
+	ball.style.top      = "0px";
+	ball.style.left     = "390px";
+	ini = setInterval(moveBall, 100);
 }
 
-function ballVertical(){
-	var ballHeight = gbi('ball').offsetTop;
-	if(ballHeight >= 390){
-		verticalDirection = -10;
-	} else if (ballHeight <= 0){
-		verticalDirection = 10;
-	}
+function moveBall(){
+	var move = setInterval(check, 5);
+
 	var current = 0;
-	var end   = verticalDirection;
-	var id = setInterval(frame, 10);
-	function frame(){
-		if(current == verticalDirection){
-			clearInterval(id);
-		} else {
-			current += (verticalDirection / (verticalSpeed/10));
-			gbi('ball').style.top = ballHeight + current + 'px';
-		}
-	}
-}
+	var end     = 20;
+	var paddlespin = 0;
 
-function ballHorizontal(){
-	var ballOffset     = gbi('ball').offsetLeft;
-	var ballheight     = gbi('ball').offsetTop;
-	var paddleHeight   = gbi('paddle').offsetTop;
-	var computerHeight = gbi('computer').offsetTop;
-	if(ballOffset == 780) {			
-		if (paddleHeight >= (ballheight - 60) && paddleHeight <= (ballheight)) {
-			horizontalDirection = -10;
+	function check(){
+		var ballHeight     = ball.offsetTop;
+		var ballOffset     = ball.offsetLeft;
+		var paddleHeight   = paddle.offsetTop;
+		var paddleLength   = paddle.clientHeight;
+		var computerHeight = computer.offsetTop;
+		// vertical
+		if(ballHeight <= 0){
+			Ydirection = 1;
 		} 
-	} else if (ballOffset == 10){
-		if (computerHeight >= (ballheight - 60) && computerHeight <= (ballheight)){
-			horizontalDirection = 10;
+		else if(ballHeight >= 390){
+			Ydirection = -1;
 		}
-	} else if(ballOffset == 790){
-		computerScore += 1;
-		gbi('comp-score').innerText = computerScore;
-		stop();
-		return;
-	} else if(ballOffset == 0){
-		playerScore += 1;
-		gbi('player-score').innerText = playerScore;
-		stop();
-		return;
-	}
-	var id = setInterval(frame,10);
-	var current = 0;
-	var end   = horizontalDirection;
-	function frame(){
-		if(current == horizontalDirection){
-			clearInterval(id);
+
+		//horizontal
+		if(ballOffset == 10){
+			Xdirection = 1;
+		}
+		if(ballOffset == 760){
+			paddlespin = paddleHeight;
+		}
+		else if(ballOffset == 780 && paddleHeight > (ballHeight - paddleLength - 5) && paddleHeight < (ballHeight + 5)){
+			Xdirection = -1;
+			if(paddlespin - paddleHeight > 10){
+				Ydirection += 1;
+			}
+			if(paddlespin - paddleHeight < -10){
+				Ydirection -= 1;
+			}
+		}
+		else if(ballOffset == 790){
+			computerScore += 1;
+			gbi('comp-score').innerText = computerScore;
+			stop();
+			return;
+		}
+		//frames
+		if(current == end){
+			clearInterval(move);
 		} else {
-			current += (horizontalDirection / (horizontalSpeed/10));
-			gbi('ball').style.left = ballOffset + current + 'px';
+			current++;
+			ball.style.top  = ballHeight + ((Yspeed) * Ydirection) + 'px';
+			ball.style.left = ballOffset + ((Xspeed) * Xdirection) + 'px';
 		}
+
 	}
 
-	gbi('ball').style.left = ballOffset + horizontalDirection + 'px';
+
 }
 
 gbi('pong-table').addEventListener("mousemove", function(e){
@@ -115,4 +115,19 @@ function track(){
 	} else {
 		gbi('computer').style.top = (final - 30) + 'px';
 	}
+}
+
+
+console.log(devise(390));
+console.log(devise(790));
+
+
+function devise(input){
+	var out = [];
+	for(var i = 0; i < input+1; i++ ){
+		if(input % i == 0 && (input-10) % i == 0){
+			out.push(i);
+		}
+	}
+	return out;
 }

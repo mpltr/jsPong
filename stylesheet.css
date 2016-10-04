@@ -26,7 +26,7 @@ html, body {
 
 #ball {
 	position: absolute;
-	top: 0px;
+	top: 25px;
 	left: 390px;
 	width: 10px;
 	height: 10px;
