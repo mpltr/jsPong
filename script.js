@@ -12,8 +12,8 @@ var paddle        = gbi('paddle');
 var computer      = gbi('computer');
 var Yspeed        = 1;
 var Ydirection    = 1;
-var Xspeed        = 5;
-var Xdirection    = 1;
+var Xspeed        = 2;
+var Xdirection    = -1;
 
 start.addEventListener("click", function(){
 	this.style.display = "none";
@@ -51,19 +51,44 @@ function check(){
 		playerScore += 1;
 		gbi('player-score').innerText = playerScore;
 		stop();
-		endFlag = 1;
 		return;
 	}
 	if(ballOffset == 10 && computerHeight > (ballHeight - paddleLength - 5) && computerHeight < (ballHeight + 5)){
 		Xdirection = 1;
 	}
-	if(ballOffset == 760){
-		paddlespin = paddleHeight;
+	else if(ballOffset == 580){
+		if(paddleHeight < (ballHeight + 9) && paddleHeight >= (ballHeight - 5)){
+			Xdirection = -1;
+			Ydirection = -1;
+			Yspeed     = 3;
+		}
+		if(paddleHeight < (ballHeight - 5) && paddleHeight >= (ballHeight - 15)){
+			Xdirection = -1;
+			Ydirection = -1;
+			Yspeed     = 2;
+		} 
+		if(paddleHeight < (ballHeight - 15) && paddleHeight >= (ballHeight - 25)){
+			Xdirection = -1;
+			Ydirection = -1;
+			Yspeed     = 1;
+		}
+		if(paddleHeight < (ballHeight - 25) && paddleHeight >= (ballHeight - 35)){
+			Xdirection = -1;
+			Ydirection = 1;
+			Yspeed     = 1;
+		}
+		if(paddleHeight < (ballHeight - 35) && paddleHeight >= (ballHeight - 45)){
+			Xdirection = -1;
+			Ydirection = 1;
+			Yspeed     = 2;
+		}
+		if(paddleHeight < (ballHeight - 45) && paddleHeight >= (ballHeight - 59)){
+			Xdirection = -1;
+			Ydirection = 1;
+			Yspeed     = 3;
+		}
 	}
-	else if(ballOffset == 780 && paddleHeight > (ballHeight - paddleLength - 5) && paddleHeight < (ballHeight + 5)){
-		Xdirection = -1;
-	}
-	else if(ballOffset >= 790){
+	else if(ballOffset >= 590){
 		computerScore += 1;
 		gbi('comp-score').innerText = computerScore;
 		stop();
@@ -78,7 +103,7 @@ function check(){
 		} else if (ballHeight > 370){
 			gbi('computer').style.top = '340px';
 		} else {
-			gbi('computer').style.top = (ballHeight-30) + 'px';
+			gbi('computer').style.top = (ballHeight - 30) + 'px';
 		}
 	}
 
@@ -123,8 +148,8 @@ gbi('pong-table').addEventListener("mousemove", function(e){
 // }
 
 
-console.log(devise(390));
-console.log(devise(770));
+console.log(devise(370));
+console.log(devise(570));
 
 
 function devise(input){
@@ -136,3 +161,22 @@ function devise(input){
 	}
 	return out;
 }
+
+function temp(input, second){
+	var out = [];
+	var i   =  1;
+	do{
+		var mult = (second * i) + 10;
+		i++
+		if((mult < 320 && mult > 280)||(mult == 570)){
+			out.push(mult);
+		}
+
+	} while(mult < input);
+	return out;
+}
+console.log(temp(571, 2));
+console.log(temp(571, 3));
+console.log(temp(571, 4));
+console.log(temp(571, 5));
+console.log(temp(571, 6));
