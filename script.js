@@ -2,6 +2,10 @@ function gbi(ID){
 	return document.getElementById(ID);
 }
 
+function gbc(CL){
+	return document.getElementsByClassName(CL);
+}
+
 //globals;
 var ini;
 var computerScore = 0;
@@ -9,26 +13,59 @@ var playerScore   = 0;
 var ball          = gbi('ball');
 var start         = gbi('start');
 var paddle        = gbi('paddle');
+var paddleContact = '580';
 var computer      = gbi('computer');
+var compContact   = '10';
 var Yspeed        = 1;
 var Ydirection    = 1;
-var Xspeed        = 2;
+var Xspeed        = 5;
 var Xdirection    = -1;
+var chance        = 1;
+var startOffset   = 0;
+
+var difLength = gbc('difBut').length;
+for(var i = 0; i < difLength; i++){
+	gbc('difBut')[i].addEventListener("click", function(){
+		gbc('difBut difButHigh')[0].className = "difBut";
+		this.className = "difBut difButHigh";
+	})
+}
+
+function registerDifficulty() {
+	var highlightedID = gbc('difBut difButHigh')[0].id;
+	if(highlightedID == "easy"){
+		Xspeed = 2;
+		startOffset = '300px';
+	} else if (highlightedID == "normal"){
+		Xspeed = 5;
+		startOffset = '300px';
+	} else if (highlightedID == "hard"){
+		Xspeed = 8;
+		startOffset   = '299px';
+		compContact   = '11';
+		paddleContact = "579px";
+	}
+
+}
+
 
 start.addEventListener("click", function(){
 	this.style.display = "none";
+	registerDifficulty();
+	gbi('difficulty').style.display = "none";
+	ball.style.left = startOffset;
+	ball.style.top = Math.random() * 390 + 'px';
+	Xdirection = -1;
 	play();
 })
 
 function play(){
-	ini = setInterval(check, 5);
+	ini = setInterval(check, 10);
 }
 
 function stop(){
 	clearInterval(ini);
 	start.style.display = "block";
-	ball.style.top      = "0px";
-	ball.style.left     = "390px";
 }
 
 function check(){
@@ -51,12 +88,46 @@ function check(){
 		playerScore += 1;
 		gbi('player-score').innerText = playerScore;
 		stop();
+		chance = 1;
 		return;
 	}
-	if(ballOffset == 10 && computerHeight > (ballHeight - paddleLength - 5) && computerHeight < (ballHeight + 5)){
-		Xdirection = 1;
+
+	//computer paddle
+	else if(ballOffset == compContact){
+		if(computerHeight < (ballHeight + 9) && computerHeight >= (ballHeight - 5)){
+			Xdirection = 1;
+			Ydirection = -1;
+			Yspeed     = 3;
+		}
+		if(computerHeight < (ballHeight - 5) && computerHeight >= (ballHeight - 15)){
+			Xdirection = 1;
+			Ydirection = -1;
+			Yspeed     = 2;
+		} 
+		if(computerHeight < (ballHeight - 15) && computerHeight >= (ballHeight - 25)){
+			Xdirection = 1;
+			Ydirection = -1;
+			Yspeed     = 1;
+		}
+		if(computerHeight < (ballHeight - 25) && computerHeight >= (ballHeight - 35)){
+			Xdirection = 1;
+			Ydirection = 1;
+			Yspeed     = 1;
+		}
+		if(computerHeight < (ballHeight - 35) && computerHeight >= (ballHeight - 45)){
+			Xdirection = 1;
+			Ydirection = 1;
+			Yspeed     = 2;
+		}
+		if(computerHeight < (ballHeight - 45) && computerHeight >= (ballHeight - 59)){
+			Xdirection = 1;
+			Ydirection = 1;
+			Yspeed     = 3;
+		}
 	}
-	else if(ballOffset == 580){
+
+	// paddle
+	else if(ballOffset == paddleContact){
 		if(paddleHeight < (ballHeight + 9) && paddleHeight >= (ballHeight - 5)){
 			Xdirection = -1;
 			Ydirection = -1;
@@ -87,6 +158,7 @@ function check(){
 			Ydirection = 1;
 			Yspeed     = 3;
 		}
+		chance = (Math.random() * 25) * (Yspeed * Ydirection);
 	}
 	else if(ballOffset >= 590){
 		computerScore += 1;
@@ -97,13 +169,14 @@ function check(){
 	}
 
 	// computer paddle 
-	if(ballOffset < 390 && Xdirection == -1){
-		if(ballHeight < 30) {
+	var compPerception = ballHeight + chance;
+	if(Xdirection == -1){
+		if(compPerception < 30) {
 			gbi('computer').style.top = '0px';
-		} else if (ballHeight > 370){
+		} else if (compPerception > 370){
 			gbi('computer').style.top = '340px';
 		} else {
-			gbi('computer').style.top = (ballHeight - 30) + 'px';
+			gbi('computer').style.top = (compPerception - 30) + 'px';
 		}
 	}
 
@@ -168,7 +241,7 @@ function temp(input, second){
 	do{
 		var mult = (second * i) + 10;
 		i++
-		if((mult < 320 && mult > 280)||(mult == 570)){
+		if((mult < 320 && mult > 280)||(mult == 580)){
 			out.push(mult);
 		}
 
@@ -176,7 +249,7 @@ function temp(input, second){
 	return out;
 }
 console.log(temp(571, 2));
-console.log(temp(571, 3));
-console.log(temp(571, 4));
+
 console.log(temp(571, 5));
-console.log(temp(571, 6));
+
+console.log(temp(571, 8))

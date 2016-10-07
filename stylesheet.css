@@ -5,35 +5,66 @@ html, body {
 	padding: 0;
 }
 
+* {
+	font-family: monospace;
+}
+
 #pong-table {
 	position: relative;
 	width: 600px;
 	height: 400px;
 	margin: auto;
 	margin-top: 200px;
-	border: 1px solid;
+	border: 3px solid #583369;
+	border-radius: 10px;
 	background-color: none;
+}
+
+#difficulty {
+	position: absolute;
+	width: 100%;
+	text-align: center;
+	top: 150px;
+}
+
+strong {
+	font-size: 16px;
+}
+
+.difBut {
+	display: inline-block;
+	width: 100px;
+	height: 30px;
+	border: 2px solid black;
+	border-radius: 5px;
+	font-size: 20px;
+	line-height: 160%;
+	cursor: pointer;
+}
+
+.difButHigh {
+	background-color: #62DB5C;
 }
 
 #start {
 	display: block;
+	position: absolute;
 	width: 100px;
 	height: 30px;
 	margin: auto;
-	margin-top: 185px;
+	margin-top: 200px;
 	z-index: 5001;
 }
 
 #ball {
 	position: absolute;
 	top: 0px;
-	left: 298px;
+	left: 300px;
 	width: 10px;
 	height: 10px;
 	border-radius: 100px;
-	background-color: red;
+	background-color: #CD2222;
 	z-index: -1;
-	/*transition: 0.05s top, 0.01s left;*/
 }
 
 #paddle {
@@ -41,7 +72,7 @@ html, body {
 	right: 0;
 	height: 60px;
 	width: 10px;
-	background-color: blue;
+	background-color: #3E3EB1;
 	border-radius: 5px;
 }
 
@@ -50,15 +81,16 @@ html, body {
 	left: 0;
 	height: 60px;
 	width: 10px;
-	background-color: green;
+	background-color: #269926;
 	border-radius: 5px;
 }
 
 #scores {
 	width:200px;
-	height: 100px;
-	border: 1px solid black;
+	height: 80px;
+	border: 3px solid black;
 	margin: auto;
+	margin-top: 50px;
 }
 
 #comp-score, #player-score {
