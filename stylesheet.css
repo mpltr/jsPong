@@ -24,7 +24,7 @@ html, body {
 	position: absolute;
 	width: 100%;
 	text-align: center;
-	top: 150px;
+	top: 120px;
 }
 
 strong {
@@ -49,11 +49,22 @@ strong {
 #start {
 	display: block;
 	position: absolute;
-	width: 100px;
-	height: 30px;
-	margin: auto;
-	margin-top: 200px;
+	margin-top: 220px;
+	margin-left: 250px;
 	z-index: 5001;
+	width: 100px;
+	height: 50px;
+	border: 2px solid black;
+	border-radius: 5px;
+	font-size: 20px;
+	line-height: 160%;
+	cursor: pointer;
+	background-color: white;
+}
+
+#start:hover {
+	background-color: #454545;
+	color: white;
 }
 
 #ball {
@@ -100,5 +111,32 @@ strong {
 	text-align: center;
 }
 
+#wins {
+	display: none;
+	position: absolute;
+	top:10%;
+	height: 80%;
+	width: 100%;
+	text-align: center;
+	font-size: 50px;
+	padding-top: 30px;
+}
+
+#playAgain {
+	display: inline-block;
+	width: 100px;
+	height: 30px;
+	border: 2px solid black;
+	border-radius: 5px;
+	font-size: 20px;
+	line-height: 160%;
+	cursor: pointer;
+	width: 150px;
+}
+
+#playAgain:hover {
+	background-color: #454545;
+	color: white;
+}
 
 

@@ -20,8 +20,10 @@ var Yspeed        = 1;
 var Ydirection    = 1;
 var Xspeed        = 5;
 var Xdirection    = -1;
-var chance        = 1;
-var startOffset   = 0;
+var animationInt  = 10;
+var startOffset   = '300px';
+var chance        = 0;
+
 
 var difLength = gbc('difBut').length;
 for(var i = 0; i < difLength; i++){
@@ -34,16 +36,11 @@ for(var i = 0; i < difLength; i++){
 function registerDifficulty() {
 	var highlightedID = gbc('difBut difButHigh')[0].id;
 	if(highlightedID == "easy"){
-		Xspeed = 2;
-		startOffset = '300px';
+		animationInt = 10;
 	} else if (highlightedID == "normal"){
-		Xspeed = 5;
-		startOffset = '300px';
+		animationInt = 5;
 	} else if (highlightedID == "hard"){
-		Xspeed = 8;
-		startOffset   = '299px';
-		compContact   = '11';
-		paddleContact = "579px";
+		animationInt = 3;
 	}
 
 }
@@ -53,20 +50,42 @@ start.addEventListener("click", function(){
 	this.style.display = "none";
 	registerDifficulty();
 	gbi('difficulty').style.display = "none";
-	ball.style.left = startOffset;
-	ball.style.top = Math.random() * 390 + 'px';
-	Xdirection = -1;
+	playerScore = 0;
+	gbi('player-score').innerText = playerScore;
+	computerScore = 0;
+	gbi('comp-score').innerText = computerScore;
+	resetBall();
 	play();
 })
 
-function play(){
-	ini = setInterval(check, 10);
+function resetBall(){
+	ball.style.left = startOffset;
+	ball.style.top = Math.random() * 390 + 'px';
+	Xdirection = -1;
 }
 
-function stop(){
-	clearInterval(ini);
-	start.style.display = "block";
+function play(){
+	ini = setInterval(check, animationInt);
 }
+
+function newRound(){
+	clearInterval(ini);
+	resetBall();
+	setTimeout(play, 300);	
+}
+
+function endGame(winner){
+	clearInterval(ini);
+	gbi('wins').innerHTML = winner.toUpperCase() + "<br>WINS!<br><br><div id='playAgain'>PLAY AGAIN</div>"
+	gbi('wins').style.display = "block";
+	gbi('playAgain').addEventListener("click", function(){
+		gbi('wins').style.display = "none";
+		gbi('difficulty').style.display = "block";
+		gbi('start').style.display = "block";
+	})
+}
+
+
 
 function check(){
 	var ballHeight     = ball.offsetTop;
@@ -87,8 +106,12 @@ function check(){
 	if(ballOffset <= 0){
 		playerScore += 1;
 		gbi('player-score').innerText = playerScore;
-		stop();
-		chance = 1;
+		if(playerScore == "10"){
+			endGame("you");
+		}else{
+			chance = 1;
+			newRound();
+		}		
 		return;
 	}
 
@@ -163,8 +186,12 @@ function check(){
 	else if(ballOffset >= 590){
 		computerScore += 1;
 		gbi('comp-score').innerText = computerScore;
-		stop();
-		endFlag = 1;
+		if(computerScore == "10"){
+			endGame("Computer");
+		} else {
+			chance = 1;
+			newRound();
+		}
 		return;
 	}
 
